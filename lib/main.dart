@@ -1,7 +1,18 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'pages/camera_page.dart';
+import 'package:camera/camera.dart';
 
-void main() => runApp(new MyApp());
+//void main() => 
+
+List<CameraDescription> cameras;
+
+Future<Null> main() async {
+  cameras = await availableCameras();
+  runApp(new MyApp());
+}
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -21,6 +32,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: new MyHomePage(title: 'One Hour, One Day Photo'),
+      //home: new CameraPage( cameras ),
     );
   }
 }
