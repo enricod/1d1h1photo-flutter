@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         // counter didn't reset back to zero; the application is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(title: 'One Hour, One Day Photo'),
+      home: new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras),
       //home: new CameraPage( cameras ),
     );
   }
