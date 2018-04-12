@@ -6,7 +6,7 @@ import 'package:camera/camera.dart';
 
 class CameraPage extends StatefulWidget {
 
-final List<CameraDescription> _cameras;
+  final List<CameraDescription> _cameras;
   CameraPage( this._cameras );
 
    @override
