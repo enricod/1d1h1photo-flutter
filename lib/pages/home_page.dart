@@ -61,15 +61,20 @@ class _MyHomePageState extends State<MyHomePage> {
             print("hai premuto " + index.toString());
               //setState((){  }); 
             },
+            type: BottomNavigationBarType.fixed,
+
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(
-              icon: new Icon(Icons.account_box),
-              title: new Text("Left"),
+              icon: new Icon(Icons.home),
+              title: new Text("Home"),
             ),
-            
             new BottomNavigationBarItem(
-              icon: new Icon(Icons.search),
-              title: new Text("Right"),
+              icon: new Icon(Icons.camera),
+              title: new Text("Camera"),
+            ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.person),
+              title: new Text("My Photos"),
             ),
         ],
       ),
