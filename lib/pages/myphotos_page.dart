@@ -18,9 +18,18 @@ class _MyPhotosState extends State<MyPhotosPage> {
   @override
   Widget build(BuildContext context) {
     
-    return new Material(
-      color:Colors.blueAccent,
-      child: new Text("sono la pagina personale")
+    return  new Scaffold(
+      appBar: new AppBar(
+        title: new Text("widget.title"),
+      ),
+      body: new Center(
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            new Text("my photos")
+          ]
+        )
+      )
     );
   }
 
