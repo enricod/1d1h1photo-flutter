@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class MyPhotosPage extends StatefulWidget {
 
- @override
+  @override
   _MyPhotosState createState() => new _MyPhotosState();
-
 }
 
 class _MyPhotosState extends State<MyPhotosPage> {

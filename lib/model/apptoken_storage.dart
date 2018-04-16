@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'dart:io';
+import 'appconfs.dart';
+import 'dart:convert';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -15,24 +17,21 @@ class AppTokenStorage {
     return new File('$path/appToken.txt');
   }
 
-  Future<String> readToken() async {
+  Future<AppConfs> readToken() async {
     try {
       final file = await _localFile;
-
       // Read the file
       String contents = await file.readAsString();
-
-      return contents;
+      return json.decode(contents);
     } catch (e) {
-      // If we encounter an error, return 0
-      return '';
+      return new AppConfs();
     }
   }
 
-  Future<File> writeCounter(String counter) async {
+  Future<File> writeCounter(AppConfs counter) async {
     final file = await _localFile;
 
     // Write the file
-    return file.writeAsString(counter);
+    return file.writeAsString(json.encode(counter));
   }
 }

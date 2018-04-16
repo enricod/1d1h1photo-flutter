@@ -1,0 +1,3 @@
+class AppConfs {
+  String appToken;
+}

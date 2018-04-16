@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginState extends State<LoginPage> {
   bool alreadyregistered = false;
-  String username;
+  String _username;
   String email;
   String apptoken = '';
 
@@ -56,7 +56,7 @@ class _LoginState extends State<LoginPage> {
           new IconButton(
               icon: const Icon(Icons.send),
               onPressed: () {
-                registerUser(email, username);
+                registerUser(email, _username);
               })
         ],
       ),
@@ -68,7 +68,7 @@ class _LoginState extends State<LoginPage> {
               decoration: new InputDecoration(
                 hintText: "Username",
               ),
-              onChanged:  (val) => setState(() {this.username = val; }),
+              onChanged:  (val) => setState(() {this._username = val; }),
             ),
           ),
           new ListTile(

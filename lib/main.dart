@@ -4,6 +4,7 @@ import 'pages/home_page.dart';
 import 'pages/login_page.dart';
 import 'package:camera/camera.dart';
 import 'model/apptoken_storage.dart';
+import 'model/appconfs.dart';
 
 //void main() => 
 
@@ -19,15 +20,13 @@ Future<Null> main() async {
   });
 }
 
-
 class MyApp extends StatelessWidget {
 
-  String appToken;
-
-  MyApp(this.appToken);
+  AppConfs appConfs;
+  MyApp(this.appConfs);
 
   Widget _getStartPage() {
-    return appToken == '' ?
+    return appConfs.appToken == '' ?
     new LoginPage() :
     new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras);
   }
