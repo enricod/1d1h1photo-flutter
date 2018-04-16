@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../ui/next_event.dart';
 import 'package:camera/camera.dart';
 import '../ui/bottom_bar.dart';
+import '../model/apptoken_storage.dart';
 
 class MyHomePage extends StatefulWidget {
 
   final List<CameraDescription> cameras;
   final String title;
+
 
   MyHomePage({Key key, this.title, this.cameras}) : super(key: key);
 

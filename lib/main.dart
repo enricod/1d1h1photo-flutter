@@ -1,38 +1,45 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
-import 'pages/camera_page.dart';
+import 'pages/login_page.dart';
 import 'package:camera/camera.dart';
+import 'model/apptoken_storage.dart';
 
 //void main() => 
 
 List<CameraDescription> cameras;
 
 Future<Null> main() async {
+  AppTokenStorage storage = new AppTokenStorage();
   cameras = await availableCameras();
-  runApp(new MyApp());
+  var readToken = storage.readToken();
+  readToken.then((onValue) {
+    print('apptoken = $onValue');
+    runApp(new MyApp(onValue));
+  });
 }
 
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+
+  String appToken;
+
+  MyApp(this.appToken);
+
+  Widget _getStartPage() {
+    return appToken == '' ?
+    new LoginPage() :
+    new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras);
+  }
+
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-      title: 'Flutter Demo',
-      theme: new ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
-        // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras),
-      //home: new CameraPage( cameras ),
+        title: 'Flutter Demo',
+        theme: new ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: _getStartPage(),
     );
   }
 }
