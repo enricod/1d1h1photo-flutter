@@ -22,7 +22,7 @@ Future<Null> main() async {
 
 class MyApp extends StatelessWidget {
 
-  AppConfs appConfs;
+  final AppConfs appConfs;
   MyApp(this.appConfs);
 
   Widget _getStartPage() {

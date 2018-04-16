@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../ui/next_event.dart';
 import 'package:camera/camera.dart';
 import '../ui/bottom_bar.dart';
-import '../model/apptoken_storage.dart';
+
 
 class MyHomePage extends StatefulWidget {
 
