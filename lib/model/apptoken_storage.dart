@@ -17,7 +17,7 @@ class AppTokenStorage {
     return new File('$path/appToken.txt');
   }
 
-  Future<AppConfs> readToken() async {
+  Future<AppConfs> readConfs() async {
     try {
       final file = await _localFile;
       // Read the file
@@ -28,7 +28,7 @@ class AppTokenStorage {
     }
   }
 
-  Future<File> writeCounter(AppConfs counter) async {
+  Future<File> writeConfs(AppConfs counter) async {
     final file = await _localFile;
 
     // Write the file

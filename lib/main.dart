@@ -13,9 +13,8 @@ List<CameraDescription> cameras;
 Future<Null> main() async {
   AppTokenStorage storage = new AppTokenStorage();
   cameras = await availableCameras();
-  var readToken = storage.readToken();
-  readToken.then((onValue) {
-    print('apptoken = $onValue');
+  var readConfs = storage.readConfs();
+  readConfs.then((onValue) {
     runApp(new MyApp(onValue));
   });
 }
