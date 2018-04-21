@@ -5,6 +5,7 @@ import 'pages/login_page.dart';
 import 'package:camera/camera.dart';
 import 'model/apptoken_storage.dart';
 import 'model/appconfs.dart';
+import 'model/consts.dart';
 
 //void main() => 
 
@@ -27,9 +28,8 @@ class MyApp extends StatelessWidget {
 
   Widget _getStartPage() {
     return appConfs.appToken == '' ?
-
-    new LoginPage(this.appConfs, storage, cameras) :
-    new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras, appConfs: appConfs);
+      new LoginPage( storage, cameras) :
+      new MyHomePage(title: Consts.APP_TITLE, cameras: cameras, appConfs: appConfs);
   }
 
   @override

@@ -3,21 +3,21 @@ import 'dart:async';
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:camera/camera.dart';
 import '../model/consts.dart';
 import '../model/appconfs.dart';
 import '../model/apptoken_storage.dart';
 import '../pages/home_page.dart';
-import 'package:camera/camera.dart';
+
 
 class LoginPage extends StatefulWidget {
   final String title = "Login";
 
   final List<CameraDescription> cameras;
 
-  final AppConfs _appConfs;
   AppTokenStorage storage;
 
-  LoginPage(this._appConfs, this.storage, this.cameras);
+  LoginPage(this.storage, this.cameras);
 
   @override
   _LoginState createState() => new _LoginState();
@@ -84,7 +84,9 @@ class _LoginState extends State<LoginPage> {
 
               Navigator.of(context).push(
                   new MaterialPageRoute(
-                      builder: (context) => new MyHomePage(title: 'One Hour, One Day Photo', cameras: widget.cameras, appConfs: newAppConfs)
+                      builder: (context) => new MyHomePage(title: Consts.APP_TITLE
+                          , cameras: widget.cameras
+                          , appConfs: newAppConfs)
                   )
               );
               // TODO
