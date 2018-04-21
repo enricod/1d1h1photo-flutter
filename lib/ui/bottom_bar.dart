@@ -46,6 +46,10 @@ class BottomBar extends StatelessWidget {
               icon: new Icon(Icons.person),
               title: new Text("My Photos"),
             ),
+            new BottomNavigationBarItem(
+              icon: new Icon(Icons.person),
+              title: new Text("My Settings"),
+            ),
         ],
       );
  }

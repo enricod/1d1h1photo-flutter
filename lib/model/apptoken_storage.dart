@@ -22,7 +22,9 @@ class AppTokenStorage {
       final file = await _localFile;
       // Read the file
       String contents = await file.readAsString();
-      return json.decode(contents);
+      Map userMap = json.decode(contents);
+
+      return new AppConfs.fromJson(userMap);
     } catch (e) {
       return new AppConfs();
     }
@@ -31,6 +33,7 @@ class AppTokenStorage {
   Future<File> writeConfs(AppConfs counter) async {
     final file = await _localFile;
 
+    print(file.path);
     // Write the file
     return file.writeAsString(json.encode(counter));
   }

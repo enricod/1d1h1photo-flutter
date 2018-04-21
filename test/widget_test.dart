@@ -7,13 +7,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:one_hour_one_day_photo_flutter/model/appconfs.dart';
+import 'package:one_hour_one_day_photo_flutter/model/apptoken_storage.dart';
 
 import 'package:one_hour_one_day_photo_flutter/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(new MyApp(new AppConfs()));
+    await tester.pumpWidget(new MyApp(new AppConfs(), new AppTokenStorage()));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

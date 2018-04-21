@@ -15,19 +15,21 @@ Future<Null> main() async {
   cameras = await availableCameras();
   var readConfs = storage.readConfs();
   readConfs.then((onValue) {
-    runApp(new MyApp(onValue));
+    runApp(new MyApp(onValue, storage));
   });
 }
 
 class MyApp extends StatelessWidget {
 
   final AppConfs appConfs;
-  MyApp(this.appConfs);
+  final AppTokenStorage storage;
+  MyApp(this.appConfs, this.storage);
 
   Widget _getStartPage() {
     return appConfs.appToken == '' ?
-    new LoginPage() :
-    new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras);
+
+    new LoginPage(this.appConfs, storage, cameras) :
+    new MyHomePage(title: 'One Hour, One Day Photo', cameras: cameras, appConfs: appConfs);
   }
 
   @override

@@ -1,22 +1,27 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../ui/next_event.dart';
 import 'package:camera/camera.dart';
+import '../ui/next_event.dart';
 import '../ui/bottom_bar.dart';
+import '../model/appconfs.dart';
 
 
 class MyHomePage extends StatefulWidget {
 
   final List<CameraDescription> cameras;
   final String title;
+  final AppConfs appConfs;
 
-
-  MyHomePage({Key key, this.title, this.cameras}) : super(key: key);
+  MyHomePage({Key key, this.title, this.cameras, this.appConfs}) : super(key: key);
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
+
+/*
+ * ================== STATE MANAGEMENT =========================================
+ */
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
@@ -36,6 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            new Text("Welcome " + widget.appConfs.username),
             new NextEvent(),
             new Text(
               'You have premuto the button this many times:',
@@ -51,7 +57,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
       bottomNavigationBar:  new BottomBar(widget.cameras),
     );
   }
