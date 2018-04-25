@@ -29,15 +29,10 @@ class MyHomePage extends StatefulWidget {
  * ================== STATE MANAGEMENT =========================================
  */
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
   Event futureEvent = new Event();
+  List<Event> closedEvents = new List();
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   Future<Map<String, dynamic>> _scaricaEventi(AppConfs appConfs) async {
     http.Response res = await http
@@ -56,8 +51,16 @@ class _MyHomePageState extends State<MyHomePage> {
     scaricaEventi.then( (onValue) {
         if (onValue['body']['futureEvents'] != null) {
           var eventoFuturo = onValue['body']['futureEvents'][0];
+          var closedEventsJson = onValue['body']['closedEvents'];
+          List<Event> closed = new List();
+          for (var evn in closedEventsJson) {
+            Event e = Event.fromJson(evn);
+            e.futuro = false;
+            closed.add(e);
+          }
           setState(() {
             futureEvent = new Event.fromJson(eventoFuturo);
+            closedEvents = closed;
           });
         }
     });
@@ -69,27 +72,24 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
-      body: new Center(
+      body: new Container(
+        padding: const EdgeInsets.all(5.0),
         child: new Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             new Text("Welcome " + widget.appConfs.username),
-            new NextEvent(futureEvent),
-            new Text(
-              'You have premuto the button this many times:',
+            new Container(
+              padding: EdgeInsets.only( bottom: 15.0 ),
+              child: new NextEvent(futureEvent),
             ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+            new Container(
+              padding: EdgeInsets.only( bottom: 15.0 ),
+              child: new NextEvent(closedEvents[0]),
             ),
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: new Icon(Icons.add),
-      ),
+
       bottomNavigationBar:  new BottomBar(widget.cameras),
     );
   }
