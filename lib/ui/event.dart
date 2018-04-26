@@ -1,6 +1,24 @@
 import 'package:flutter/material.dart';
 import '../model/events.dart';
 
+class EventEntryItem extends StatelessWidget {
+  const EventEntryItem(this.entry);
+
+  final Event entry;
+
+  Widget _buildTiles(Event root) {
+    return Column(children: <Widget>[
+      new ListTile(title: new Text(root.name)),
+    new ImagesRow(entry)
+    ]);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildTiles(entry);
+  }
+}
+
 class ImagesRow extends StatelessWidget {
   Event event;
 
@@ -10,7 +28,7 @@ class ImagesRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Row(
       children: <Widget>[
-       new Expanded(
+        new Expanded(
           child: new Image.network(
               "https://c1.staticflickr.com/9/8028/28941101031_e93b862b44_q.jpg"),
         ),
@@ -57,8 +75,9 @@ class NextEventState extends State<NextEvent> {
                       fontSize: 20.0, fontWeight: FontWeight.bold),
                 )),
                 new Text("inizia  tra ..."),
-                widget.event.futuro ? new Text("") : new ImagesRow(widget.event)  ,
-
+                widget.event.futuro
+                    ? new Text("")
+                    : new ImagesRow(widget.event),
               ],
             )));
   }
