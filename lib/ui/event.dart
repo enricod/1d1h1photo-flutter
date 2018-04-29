@@ -1,21 +1,38 @@
 import 'package:flutter/material.dart';
 import '../model/events.dart';
+import '../pages/event_page.dart';
 
 class EventEntryItem extends StatelessWidget {
-  const EventEntryItem(this.entry);
-
   final Event entry;
 
-  Widget _buildTiles(Event root) {
+  const EventEntryItem(this.entry);
+
+  void eventSelected() {
+    print("selected " + entry.name);
+  }
+
+  void gotoToEventPage(BuildContext context, Event event) {
+    Navigator.of(context).push(
+        new MaterialPageRoute(
+            builder: (context) => new EventPage(event)
+        )
+    );
+  }
+  Widget _buildTiles(BuildContext context, Event root) {
     return Column(children: <Widget>[
-      new ListTile(title: new Text(root.name)),
-    new ImagesRow(entry)
+      new ListTile(
+        title:
+            new FlatButton(onPressed: () => gotoToEventPage(context, root),
+                child: new Text(root.name)), //,
+        subtitle: new Text("closed " + root.end),
+      ),
+      new ImagesRow(entry)
     ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildTiles(entry);
+    return _buildTiles(context, entry);
   }
 }
 

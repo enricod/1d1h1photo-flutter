@@ -62,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -72,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
           itemBuilder: (BuildContext context, int index) =>
               new EventEntryItem(closedEvents[index]),
           itemCount: closedEvents.length,
+
         ),
 
 

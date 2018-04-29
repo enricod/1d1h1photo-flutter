@@ -11,6 +11,12 @@ class Submission {
 
 class Event {
   String name;
+  String end;
+
+
+  DateTime getEndAsDateTime() {
+    return DateTime.parse(end);
+  }
   bool futuro = true;
   List<Submission> submissions = new List() ;
 
@@ -27,6 +33,7 @@ class Event {
    */
   Event.fromJson(Map<String, dynamic> json) {
      name = json['Name'];
+     end = json['End'];
      for (var evn in json['Submissions']) {
        Submission submission = Submission.fromJson(evn);
        submissions.add(submission);

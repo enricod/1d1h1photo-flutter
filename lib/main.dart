@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
     return appConfs.appToken == '' ?
       new LoginPage( storage, cameras) :
       new MyHomePage(title: Consts.APP_TITLE, cameras: cameras, appConfs: appConfs);
+      //new EventPage(new Event());
   }
 
   @override
