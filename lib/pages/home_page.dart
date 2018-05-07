@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Consts.API_BASE_URL + '/events/summary/list',
         headers: {'Authorization': appConfs.appToken});
 
-    print("chiamata a elenco eventi '" + Consts.API_BASE_URL + '/events/summary/list' + "', statusCode: " + res.statusCode.toString());
+    print("GET: '" + Consts.API_BASE_URL + '/events/summary/list' + "', statusCode: " + res.statusCode.toString());
     // print(res.body);
     return json.decode(res.body);
   }

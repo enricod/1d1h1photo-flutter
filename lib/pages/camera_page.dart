@@ -19,11 +19,6 @@ IconData cameraLensIcon(CameraLensDirection direction) {
 }
 
 class CameraPage extends StatefulWidget {
-
-  //final List<CameraDescription> _cameras;
-  // CameraPage( this._cameras );
-
-
   
    @override
    _CameraExampleHomeState createState() => new _CameraExampleHomeState();
@@ -42,14 +37,21 @@ class _CameraExampleHomeState extends State<CameraPage> {
 
   int pictureCount = 0;
 
-  void loadCameras() async {
-      cameras = await availableCameras();
+  Future<List<CameraDescription>> loadCameras() async {
+      return await availableCameras() ;
   }
 
   @override
   void initState() {
     super.initState();
-    loadCameras();
+    loadCameras().then( (c) {
+      print("caricate fotocamere");
+      setState(() {
+              this.cameras = c;
+            });
+      
+    });
+    
   }
 
   @override
