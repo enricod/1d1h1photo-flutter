@@ -7,4 +7,8 @@ class Consts {
 
   /// dimensione titolo evento in widget
   static const EVENT_CLOSED_TITLE_FONT_SIZE = 18.0;
+
+  static const SECONDS_IN_HOUR = 60*60;
+  static const SECONDS_IN_DAY =  24 * SECONDS_IN_HOUR;
+
 }

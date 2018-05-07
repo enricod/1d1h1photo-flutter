@@ -72,38 +72,32 @@ class ImagesRow extends StatelessWidget {
 }
 
 class NextEvent extends StatefulWidget {
+  
   final Event event;
 
   NextEvent(this.event);
 
   @override
-  State createState() => new NextEventState();
+  State createState() => new NextEventState(this.event);
 }
 
 /// mostra widget con informazioni su prossimo evento
 class NextEventState extends State<NextEvent> {
 
-  double startingInSeconds = 0.0;
+  String startingIn = '';
+
+  Event event;
+
+  NextEventState(this.event);
 
   @override
   void initState() {
     super.initState();
 
-    setState( () {
-      startingInSeconds = calcolaStartingInSeconds();
-    });
   }
 
-  double calcolaStartingInSeconds() {
-    print(widget.event.start);
-    print(widget.event.end);
-    return 10.0;
-    //return DateTime.parse(widget.event.start).millisecondsSinceEpoch - new DateTime.now().millisecondsSinceEpoch / 1000;
-  }
-  String formatStartingIn() {
-    return startingInSeconds.toInt().toString() + " seconds";
-    
-  }
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -122,13 +116,12 @@ class NextEventState extends State<NextEvent> {
                         ))),
                 new Row(children: <Widget>
                     [
-                      new Text('starting in  '),
-                      new Text( formatStartingIn() ),
+                      new Text( widget.event.counter() ),
                     ]
                 ),
                 widget.event.isFuture()
-                    ? new Text('immagini che arrivano')
-                    : new ImagesRow(widget.event),
+                    ? new Text('')
+                    : new ImagesRow(event),
               ],
             )));
   }
