@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import '../model/appconfs.dart';
 import '../model/apptoken_storage.dart';
 import '../pages/mysettings_page.dart';
@@ -12,7 +11,7 @@ class BottomBar extends StatelessWidget {
 
   final AppTokenStorage storage;
 
-  BottomBar(   this.appConfs, this.storage);
+  BottomBar(this.appConfs, this.storage);
 
   @override
   Widget build(BuildContext context) {
@@ -25,25 +24,24 @@ class BottomBar extends StatelessWidget {
                   builder: (context) => new CameraPage( )
                 )
               );
-            } else if (index==2) {
+            } else if (index == 2) {
+              // MyPhotos page
               Navigator.of(context).push(
                 new MaterialPageRoute(
                   builder: (context) => new MyPhotosPage(this.appConfs)
                 )
               );
             
-            } else if (index==3) {
+            } else if (index == 3) {
+              // MySettings page
               Navigator.of(context).push(
                 new MaterialPageRoute(
                   builder: (context) => new MySettingsPage(this.appConfs, this.storage)
                 )
               );
             }
-            print("hai premuto " + index.toString());
-              //setState((){  }); 
-            },
-            type: BottomNavigationBarType.fixed,
-
+          },
+          type: BottomNavigationBarType.fixed,
           items: <BottomNavigationBarItem>[
             new BottomNavigationBarItem(
               icon: new Icon(Icons.home),

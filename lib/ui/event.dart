@@ -37,7 +37,7 @@ class EventEntryItem extends StatelessWidget {
 }
 
 class ImagesRow extends StatelessWidget {
-  Event event;
+  final Event event;
 
   ImagesRow(this.event);
 
@@ -63,7 +63,7 @@ class ImagesRow extends StatelessWidget {
 }
 
 class NextEvent extends StatefulWidget {
-  Event event;
+  final Event event;
 
   NextEvent(this.event);
 

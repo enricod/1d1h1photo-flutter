@@ -17,9 +17,9 @@ class Event {
 
   Event(this.name, this.end);
 
-  Event.named(String name) : this(name, "");
+  Event.named(String name) : this(name, '');
 
-  Event.empty( ) : this("", "");
+  Event.empty( ) : this('', '');
 
   DateTime getEndAsDateTime() {
     return DateTime.parse(end);
