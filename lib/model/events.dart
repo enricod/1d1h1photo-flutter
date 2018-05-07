@@ -9,32 +9,53 @@ class Submission {
         thumbUrl = json['ThumbUrl'];
 }
 
+
+/// Evento
 class Event {
-  String name;
-  String end;
-  bool futuro = true;
+  String name = '';
+  String start = '';
+  String end = '';
+  
   List<Submission> submissions = new List() ;
 
-  Event(this.name, this.end);
+  Event(this.name, this.start, this.end);
 
-  Event.named(String name) : this(name, '');
+  Event.named(String name) : this(name, '', '');
 
-  Event.empty( ) : this('', '');
+  Event.empty( ) : this('', '', '');
 
   DateTime getEndAsDateTime() {
     return DateTime.parse(end);
   }
-  
-  bool isFuturo() {
-    return futuro;
+
+  /// evento è in corso!  
+  bool isOpen() {
+    if (start.length == 0 || end.length == 0) return false;
+    DateTime ora = new DateTime.now();
+    return ora.millisecondsSinceEpoch >= DateTime.parse(start).millisecondsSinceEpoch && 
+            ora.millisecondsSinceEpoch >= DateTime.parse(end).millisecondsSinceEpoch;
+  }
+
+  bool isFuture() {
+    if (start.length == 0) return false;
+    DateTime ora = new DateTime.now();
+    return ora.isBefore( DateTime.parse(start));
+  }
+
+  bool isClosed() {
+    if (start.length == 0) return true;
+    DateTime ora = new DateTime.now();
+    return ora.isAfter( DateTime.parse(end));
   }
 
   /*
    * costruisce descrizione dell'evento a partire dalla risposta JSON del server
    */
   Event.fromJson(Map<String, dynamic> json) {
-     name = json['Name'];
-     end = json['End'];
+     name   = json['Name'];
+     end    = json['End'];
+     start  = json['Start'];
+
      var submissionsJson = json['Submissions'];
 
      // il campo Submissions può essere null, quindi dobbiamo gestire la situazione

@@ -35,7 +35,6 @@ class _MyHomePageState extends State<MyHomePage> {
         headers: {'Authorization': appConfs.appToken});
 
     print("GET: '" + Consts.API_BASE_URL + '/events/summary/list' + "', statusCode: " + res.statusCode.toString());
-    // print(res.body);
     return json.decode(res.body);
   }
 
@@ -50,15 +49,12 @@ class _MyHomePageState extends State<MyHomePage> {
         if ( eventiFuturi != null && eventiFuturi.length > 0) {
           eventoFuturo = onValue['body']['futureEvents'][0];
         }
+        List<Event> _closed = new List();
         var closedEventsJson = onValue['body']['closedEvents'];
-        
-        List<Event> closed = new List();
         if (closedEventsJson != null) {
           for (var evn in closedEventsJson) {
-            
             Event e = Event.fromJson(evn);
-            e.futuro = false;
-            closed.add(e);
+            _closed.add(e);
           }
         }
         setState(() {
@@ -67,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else {
             futureEvent = new Event.named("No future event yet");
           }
-          closedEvents = closed;
+          closedEvents = _closed;
         });
       }
     });
@@ -80,14 +76,19 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(widget.title),
       ),
-        body: new ListView.builder(
-          itemBuilder: (BuildContext context, int index) =>
-              new EventEntryItem(closedEvents[index]),
-          itemCount: closedEvents.length,
-
-        ),
-
-
+      body: new Container(
+        child:new Column(
+          children: <Widget>[
+            new NextEvent(futureEvent),
+            new Expanded(
+              child:  ListView.builder(
+                  itemBuilder: (BuildContext context, int index) =>
+                    new EventEntryItem(closedEvents[index]),
+                  itemCount: closedEvents.length,
+                ),
+              ),
+          ]),
+      ),
       bottomNavigationBar: new BottomBar( widget.appConfs, widget.storage),
     );
   }

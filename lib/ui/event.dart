@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../model/events.dart';
+import '../model/consts.dart';
+
 import '../pages/event_page.dart';
+
 
 class EventEntryItem extends StatelessWidget {
   final Event entry;
@@ -23,7 +26,13 @@ class EventEntryItem extends StatelessWidget {
       new ListTile(
         title:
             new FlatButton(onPressed: () => gotoToEventPage(context, root),
-                child: new Text(root.name)), //,
+                child: new Text(root.name,
+                   style: new TextStyle(
+                      color: Colors.grey[555],
+                      fontSize: Consts.EVENT_CLOSED_TITLE_FONT_SIZE,
+                    ),
+                  )
+              ), //,
         subtitle: new Text("closed " + root.end),
       ),
       new ImagesRow(entry)
@@ -71,6 +80,7 @@ class NextEvent extends StatefulWidget {
   State createState() => new NextEventState();
 }
 
+/// mostra widget con informazioni su prossimo evento
 class NextEventState extends State<NextEvent> {
   @override
   void initState() {
@@ -87,12 +97,13 @@ class NextEventState extends State<NextEvent> {
               children: <Widget>[
                 new Center(
                     child: new Text(
-                  widget.event.name,
-                  style: new TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
-                )),
-                new Text("inizia  tra ..."),
-                widget.event.futuro
+                      widget.event.name,
+                      style: new TextStyle(
+                          color: Colors.grey[555],
+                          fontSize: 24.0
+                        ))),
+                new Text("inizia  tra ..." ),
+                widget.event.isFuture()
                     ? new Text("")
                     : new ImagesRow(widget.event),
               ],
