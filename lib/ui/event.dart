@@ -33,7 +33,7 @@ class EventEntryItem extends StatelessWidget {
                     ),
                   )
               ), //,
-        subtitle: new Text("closed " + root.end),
+          subtitle: new Text("closed " + root.end),
       ),
       new ImagesRow(entry)
     ]);
@@ -50,21 +50,25 @@ class ImagesRow extends StatelessWidget {
 
   ImagesRow(this.event);
 
+  String thumbUrl(int index) {
+    if (this.event.submissions != null && this.event.submissions.length > index) {
+      return Consts.API_BASE_URL + '/' + this.event.submissions[index].thumbUrl;
+    }
+    // FIXME
+    return "https://c1.staticflickr.com/9/8028/28941101031_e93b862b44_q.jpg";
+  }
   @override
   Widget build(BuildContext context) {
     return new Row(
       children: <Widget>[
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/9/8028/28941101031_e93b862b44_q.jpg"),
+          child: new Image.network( thumbUrl(0))
         ),
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/3/2665/32060536633_6c743b9f11_q.jpg"),
+          child: new Image.network( thumbUrl(1))
         ),
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/5/4313/36075724132_2d3722d870_q.jpg"),
+          child: new Image.network( thumbUrl(2))
         ),
       ],
     );
@@ -115,7 +119,8 @@ class NextEventState extends State<NextEvent> {
                           fontSize: 24.0
                         ))),
                 new Row(children: <Widget>
-                    [
+                    [ 
+                      
                       new Text( widget.event.counter() ),
                     ]
                 ),

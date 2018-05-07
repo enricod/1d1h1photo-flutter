@@ -1,9 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../model/appconfs.dart';
+import '../model/consts.dart';
 
 
 IconData cameraLensIcon(CameraLensDirection direction) {
@@ -20,6 +24,10 @@ IconData cameraLensIcon(CameraLensDirection direction) {
 
 class CameraPage extends StatefulWidget {
   
+  final AppConfs appConfs;
+  
+  CameraPage(this.appConfs);
+
    @override
    _CameraExampleHomeState createState() => new _CameraExampleHomeState();
 
@@ -45,7 +53,6 @@ class _CameraExampleHomeState extends State<CameraPage> {
   void initState() {
     super.initState();
     loadCameras().then( (c) {
-      print("caricate fotocamere");
       setState(() {
               this.cameras = c;
             });
@@ -119,7 +126,7 @@ class _CameraExampleHomeState extends State<CameraPage> {
     }
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('Camera example'),
+        title: const Text('Camera'),
       ),
       body: new Column(children: columnChildren),
       floatingActionButton: (controller == null)
@@ -162,24 +169,49 @@ class _CameraExampleHomeState extends State<CameraPage> {
     );
   }
 
+  Future<Null> uploadImage(String path) async  {
+    Uri url = Uri.parse(Consts.API_BASE_URL + '/images/upload');
+    print(url.toString());
+    print( path );
+    var request = new http.MultipartRequest("POST", url);
+    request.headers['Authorization'] = widget.appConfs.appToken;
+
+    http.MultipartFile.fromPath(
+          'image',
+          path,
+          contentType: new MediaType('image/jpeg', 'jpeg'),
+      ).then( (f) {
+            request.files.add( f);
+            request.send().then((response) {
+              print( response.statusCode);
+              if (response.statusCode == 200) print("Uploaded!");
+            }        );
+      });
+
+    
+      
+  }
+
   Future<Null> capture() async {
     if (controller.value.isStarted) {
-      final Directory tempDir = await getTemporaryDirectory();
+      final Directory tempDir = await  getTemporaryDirectory();
       if (!mounted) {
         return;
       }
       final String tempPath = tempDir.path;
       final String path = '$tempPath/picture${pictureCount++}.jpg';
-      print("salvataggio immagine " + path);
+      //print("salvataggio immagine " + path);
       await controller.capture(path);
       if (!mounted) {
         return;
       }
-      setState(
-            () {
+      
+      setState(() {
           imagePath = path;
         },
       );
+
+      await uploadImage(path);
     }
   }
 }

@@ -21,7 +21,7 @@ class BottomBar extends StatelessWidget {
             if (index == 1) {
               Navigator.of(context).push(
                 new MaterialPageRoute(
-                  builder: (context) => new CameraPage( )
+                  builder: (context) => new CameraPage(this.appConfs )
                 )
               );
             } else if (index == 2) {
