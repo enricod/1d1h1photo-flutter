@@ -82,9 +82,27 @@ class NextEvent extends StatefulWidget {
 
 /// mostra widget con informazioni su prossimo evento
 class NextEventState extends State<NextEvent> {
+
+  double startingInSeconds = 0.0;
+
   @override
   void initState() {
     super.initState();
+
+    setState( () {
+      startingInSeconds = calcolaStartingInSeconds();
+    });
+  }
+
+  double calcolaStartingInSeconds() {
+    print(widget.event.start);
+    print(widget.event.end);
+    return 10.0;
+    //return DateTime.parse(widget.event.start).millisecondsSinceEpoch - new DateTime.now().millisecondsSinceEpoch / 1000;
+  }
+  String formatStartingIn() {
+    return startingInSeconds.toInt().toString() + " seconds";
+    
   }
 
   @override
@@ -102,9 +120,14 @@ class NextEventState extends State<NextEvent> {
                           color: Colors.grey[555],
                           fontSize: 24.0
                         ))),
-                new Text("inizia  tra ..." ),
+                new Row(children: <Widget>
+                    [
+                      new Text('starting in  '),
+                      new Text( formatStartingIn() ),
+                    ]
+                ),
                 widget.event.isFuture()
-                    ? new Text("")
+                    ? new Text('immagini che arrivano')
                     : new ImagesRow(widget.event),
               ],
             )));

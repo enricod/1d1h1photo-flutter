@@ -48,6 +48,13 @@ class Event {
     return ora.isAfter( DateTime.parse(end));
   }
 
+  String startingIn() {
+    if (isFuture()) {
+      return '125 sec';
+    } else {
+      return '';
+    }
+  }
   /*
    * costruisce descrizione dell'evento a partire dalla risposta JSON del server
    */
