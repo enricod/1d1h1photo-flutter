@@ -20,23 +20,36 @@ IconData cameraLensIcon(CameraLensDirection direction) {
 
 class CameraPage extends StatefulWidget {
 
-  final List<CameraDescription> _cameras;
-  CameraPage( this._cameras );
+  //final List<CameraDescription> _cameras;
+  // CameraPage( this._cameras );
 
+
+  
    @override
    _CameraExampleHomeState createState() => new _CameraExampleHomeState();
 
 }
 
 class _CameraExampleHomeState extends State<CameraPage> {
+
+  List<CameraDescription> cameras  = new List();
+
   bool opening = false;
+
   CameraController controller;
+
   String imagePath;
+
   int pictureCount = 0;
+
+  void loadCameras() async {
+      cameras = await availableCameras();
+  }
 
   @override
   void initState() {
     super.initState();
+    loadCameras();
   }
 
   @override
@@ -45,10 +58,10 @@ class _CameraExampleHomeState extends State<CameraPage> {
 
     final List<Widget> cameraList = <Widget>[];
 
-    if (widget._cameras.isEmpty) {
+    if (this.cameras.isEmpty) {
       cameraList.add(const Text('No cameras found'));
     } else {
-      for (CameraDescription cameraDescription in widget._cameras) {
+      for (CameraDescription cameraDescription in this.cameras) {
         cameraList.add(
           new SizedBox(
             width: 90.0,

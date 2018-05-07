@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import '../model/appconfs.dart';
 
 class MyPhotosPage extends StatefulWidget {
+
+  final AppConfs appConfs;
+
+  MyPhotosPage(this.appConfs);
 
   @override
   _MyPhotosState createState() => new _MyPhotosState();

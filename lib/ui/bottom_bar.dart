@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import '../pages/camera_page.dart';
-
-import '../pages/myphotos_page.dart';
 import 'package:camera/camera.dart';
+import '../model/appconfs.dart';
+import '../model/apptoken_storage.dart';
+import '../pages/mysettings_page.dart';
+import '../pages/camera_page.dart';
+import '../pages/myphotos_page.dart';
 
 class BottomBar extends StatelessWidget {
 
-  final List<CameraDescription> cameras;
+  final AppConfs appConfs;
 
-  BottomBar( this.cameras);
+  final AppTokenStorage storage;
+
+  BottomBar(   this.appConfs, this.storage);
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +22,20 @@ class BottomBar extends StatelessWidget {
             if (index == 1) {
               Navigator.of(context).push(
                 new MaterialPageRoute(
-                  builder: (context) => new CameraPage(this.cameras)
+                  builder: (context) => new CameraPage( )
                 )
               );
             } else if (index==2) {
               Navigator.of(context).push(
                 new MaterialPageRoute(
-                  builder: (context) => new MyPhotosPage()
+                  builder: (context) => new MyPhotosPage(this.appConfs)
+                )
+              );
+            
+            } else if (index==3) {
+              Navigator.of(context).push(
+                new MaterialPageRoute(
+                  builder: (context) => new MySettingsPage(this.appConfs, this.storage)
                 )
               );
             }

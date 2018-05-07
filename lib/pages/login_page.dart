@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:camera/camera.dart';
 import '../model/consts.dart';
 import '../model/appconfs.dart';
 import '../model/apptoken_storage.dart';
@@ -12,12 +10,9 @@ import '../pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   final String title = "Login";
+  final AppTokenStorage storage;
 
-  final List<CameraDescription> cameras;
-
-  AppTokenStorage storage;
-
-  LoginPage(this.storage, this.cameras);
+  LoginPage(this.storage);
 
   @override
   _LoginState createState() => new _LoginState();
@@ -26,16 +21,11 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
 
   String _username;
-
   String _email;
-
   // usato per identificare telefono
   String _apptoken = '';
-
   // codice di validazione, inviato via email
   String _code = '';
-
-  bool _codeValid = false;
 
   // esegue chiama al servizio per la registrazione dell'utente
   static Future<Map> doRegisterUser(Map reqBody) async {
@@ -54,12 +44,11 @@ class _LoginState extends State<LoginPage> {
   void registerUser(String email, String username) {
     Future<Map>  response =  doRegisterUser(
         {'username': username, 'email': email});
-    response.then(
-            (value) {
-              if (value['head']['success'] == true)
-              {
+
+    response.then((value) {
+              if (value['head']['success'] == true) {
                 setState(() {
-                 this._apptoken = value['body']['appToken'];
+                  this._apptoken = value['body']['appToken'];
                 });
               }
             },
@@ -68,31 +57,24 @@ class _LoginState extends State<LoginPage> {
 
   void validateCode(String apptoken, String code) {
     Future<bool>  response =  doValidateCode(
-        {'AppToken': apptoken, 'Code': code});
+        {'AppToken': apptoken, 'ValidationCode': code});
+
     response.then( (value) {
           if (value) {
-            setState(() {
-              this._codeValid = true;
+            AppConfs newAppConfs = new AppConfs();
+            newAppConfs.username = this._username;
+            newAppConfs.email = this._email;
+            newAppConfs.appToken = this._apptoken;
 
-              print ("codice valido!");
-              AppConfs newAppConfs = new AppConfs();
-              newAppConfs.username = this._username;
-              newAppConfs.email = this._email;
-              newAppConfs.appToken = this._apptoken;
+            widget.storage.writeConfs(newAppConfs);
 
-              widget.storage.writeConfs(newAppConfs);
+            Navigator.of(context).push(
+                new MaterialPageRoute(
+                    builder: (context) => new MyHomePage(title: Consts.APP_TITLE
+                        , appConfs: newAppConfs)
+                )
+            );
 
-              Navigator.of(context).push(
-                  new MaterialPageRoute(
-                      builder: (context) => new MyHomePage(title: Consts.APP_TITLE
-                          , cameras: widget.cameras
-                          , appConfs: newAppConfs)
-                  )
-              );
-              // TODO
-              // salva configurazioni
-              // vai a home page
-            });
           } else {
             // TODO
             // mostra messaggio di errore
@@ -133,16 +115,17 @@ class _LoginState extends State<LoginPage> {
           new ListTile(
             leading: const Icon(Icons.person),
             title: new TextField(
+              enabled: _apptoken.length == 0,
               decoration: new InputDecoration(
                 hintText: "Username",
               ),
               onChanged:  (val) => setState(() {this._username = val; }),
             ),
           ),
-
           new ListTile(
             leading: const Icon(Icons.email),
             title: new TextField(
+              enabled: _apptoken.length == 0,
               decoration: new InputDecoration(
                 hintText: "Email",
               ),
@@ -150,8 +133,10 @@ class _LoginState extends State<LoginPage> {
             ),
           ),
           new ListTile(
+            
             leading: const Icon(Icons.email),
             title: new TextField(
+              enabled: _apptoken.length > 0,
               decoration: new InputDecoration(
                 hintText: "Codice di validazione",
               ),

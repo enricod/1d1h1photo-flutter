@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../model/apptoken_storage.dart';
 import '../model/consts.dart';
 import '../ui/event.dart';
 import '../ui/bottom_bar.dart';
@@ -12,12 +13,11 @@ import '../model/appconfs.dart';
 import '../model/events.dart';
 
 class MyHomePage extends StatefulWidget {
-  final List<CameraDescription> cameras;
   final String title;
   final AppConfs appConfs;
+  final AppTokenStorage storage;
 
-  MyHomePage({Key key, this.title, this.cameras, this.appConfs})
-      : super(key: key);
+  MyHomePage({Key key, this.title, this.appConfs, this.storage}) : super(key: key);
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
@@ -27,16 +27,16 @@ class MyHomePage extends StatefulWidget {
  * ================== STATE MANAGEMENT =========================================
  */
 class _MyHomePageState extends State<MyHomePage> {
-  Event futureEvent = new Event();
-  List<Event> closedEvents = new List();
+  Event futureEvent = new Event.empty();
+  List<Event> closedEvents = [new Event.empty()]; // new List();
 
   Future<Map<String, dynamic>> _scaricaEventi(AppConfs appConfs) async {
     http.Response res = await http.get(
         Consts.API_BASE_URL + '/events/summary/list',
         headers: {'Authorization': appConfs.appToken});
 
-    print(res.statusCode);
-    print(res.body);
+    print("chiamata a elenco eventi '" + Consts.API_BASE_URL + '/events/summary/list' + "', statusCode: " + res.statusCode.toString());
+    // print(res.body);
     return json.decode(res.body);
   }
 
@@ -46,16 +46,28 @@ class _MyHomePageState extends State<MyHomePage> {
     var scaricaEventi = _scaricaEventi(widget.appConfs);
     scaricaEventi.then((onValue) {
       if (onValue['body']['futureEvents'] != null) {
-        var eventoFuturo = onValue['body']['futureEvents'][0];
+        List<dynamic> eventiFuturi = onValue['body']['futureEvents'];
+        dynamic eventoFuturo;
+        if ( eventiFuturi != null && eventiFuturi.length > 0) {
+          eventoFuturo = onValue['body']['futureEvents'][0];
+        }
         var closedEventsJson = onValue['body']['closedEvents'];
+        
         List<Event> closed = new List();
-        for (var evn in closedEventsJson) {
-          Event e = Event.fromJson(evn);
-          e.futuro = false;
-          closed.add(e);
+        if (closedEventsJson != null) {
+          for (var evn in closedEventsJson) {
+            
+            Event e = Event.fromJson(evn);
+            e.futuro = false;
+            closed.add(e);
+          }
         }
         setState(() {
-          futureEvent = new Event.fromJson(eventoFuturo);
+          if (eventoFuturo != null) {
+            futureEvent = new Event.fromJson(eventoFuturo);
+          } else {
+            futureEvent = new Event.named("No future event yet");
+          }
           closedEvents = closed;
         });
       }
@@ -77,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
 
 
-      bottomNavigationBar: new BottomBar(widget.cameras),
+      bottomNavigationBar: new BottomBar( widget.appConfs, widget.storage),
     );
   }
 }
