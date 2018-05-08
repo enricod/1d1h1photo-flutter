@@ -7,6 +7,7 @@ class EventPage extends StatelessWidget {
 
   EventPage(this.event);
 
+  
   @override
   Widget build(BuildContext context) {
     print("build");
