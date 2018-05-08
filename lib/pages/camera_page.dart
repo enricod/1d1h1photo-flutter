@@ -82,8 +82,7 @@ class _CameraExampleHomeState extends State<CameraPage> {
                 final CameraController tempController = controller;
                 controller = null;
                 await tempController?.dispose();
-                controller =
-                new CameraController(newValue, ResolutionPreset.high);
+                controller = new CameraController(newValue, ResolutionPreset.low);
                 await controller.initialize();
                 setState(() {});
               },
@@ -171,8 +170,6 @@ class _CameraExampleHomeState extends State<CameraPage> {
 
   Future<Null> uploadImage(String path) async  {
     Uri url = Uri.parse(Consts.API_BASE_URL + '/images/upload');
-    print(url.toString());
-    print( path );
     var request = new http.MultipartRequest("POST", url);
     request.headers['Authorization'] = widget.appConfs.appToken;
 
@@ -183,9 +180,12 @@ class _CameraExampleHomeState extends State<CameraPage> {
       ).then( (f) {
             request.files.add( f);
             request.send().then((response) {
-              print( response.statusCode);
-              if (response.statusCode == 200) print("Uploaded!");
-            }        );
+              if (response.statusCode == 200) {
+                print("upload successuful");
+              } else {
+                print("error in image upload ${response.statusCode}");
+              }
+            });
       });
 
     
@@ -208,8 +208,11 @@ class _CameraExampleHomeState extends State<CameraPage> {
       
       setState(() {
           imagePath = path;
-        },
-      );
+        });
+
+      File imageFile = new File(path);
+      imageFile.length().then( (dim) => print("$path, dim in bytes = " + dim.toString()));
+      
 
       await uploadImage(path);
     }
