@@ -1,9 +1,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import '../model/appconfs.dart';
+import '../model/consts.dart';
 
 
 IconData cameraLensIcon(CameraLensDirection direction) {
@@ -19,9 +23,10 @@ IconData cameraLensIcon(CameraLensDirection direction) {
 }
 
 class CameraPage extends StatefulWidget {
-
-  final List<CameraDescription> _cameras;
-  CameraPage( this._cameras );
+  
+  final AppConfs appConfs;
+  
+  CameraPage(this.appConfs);
 
    @override
    _CameraExampleHomeState createState() => new _CameraExampleHomeState();
@@ -29,14 +34,31 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraExampleHomeState extends State<CameraPage> {
+
+  List<CameraDescription> cameras  = new List();
+
   bool opening = false;
+
   CameraController controller;
+
   String imagePath;
+
   int pictureCount = 0;
+
+  Future<List<CameraDescription>> loadCameras() async {
+      return await availableCameras() ;
+  }
 
   @override
   void initState() {
     super.initState();
+    loadCameras().then( (c) {
+      setState(() {
+              this.cameras = c;
+            });
+      
+    });
+    
   }
 
   @override
@@ -45,10 +67,10 @@ class _CameraExampleHomeState extends State<CameraPage> {
 
     final List<Widget> cameraList = <Widget>[];
 
-    if (widget._cameras.isEmpty) {
+    if (this.cameras.isEmpty) {
       cameraList.add(const Text('No cameras found'));
     } else {
-      for (CameraDescription cameraDescription in widget._cameras) {
+      for (CameraDescription cameraDescription in this.cameras) {
         cameraList.add(
           new SizedBox(
             width: 90.0,
@@ -60,8 +82,7 @@ class _CameraExampleHomeState extends State<CameraPage> {
                 final CameraController tempController = controller;
                 controller = null;
                 await tempController?.dispose();
-                controller =
-                new CameraController(newValue, ResolutionPreset.high);
+                controller = new CameraController(newValue, ResolutionPreset.low);
                 await controller.initialize();
                 setState(() {});
               },
@@ -104,7 +125,7 @@ class _CameraExampleHomeState extends State<CameraPage> {
     }
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('Camera example'),
+        title: const Text('Camera'),
       ),
       body: new Column(children: columnChildren),
       floatingActionButton: (controller == null)
@@ -147,24 +168,53 @@ class _CameraExampleHomeState extends State<CameraPage> {
     );
   }
 
+  Future<Null> uploadImage(String path) async  {
+    Uri url = Uri.parse(Consts.API_BASE_URL + '/images/upload');
+    var request = new http.MultipartRequest("POST", url);
+    request.headers['Authorization'] = widget.appConfs.appToken;
+
+    http.MultipartFile.fromPath(
+          'image',
+          path,
+          contentType: new MediaType('image/jpeg', 'jpeg'),
+      ).then( (f) {
+            request.files.add( f);
+            request.send().then((response) {
+              if (response.statusCode == 200) {
+                print("upload successuful");
+              } else {
+                print("error in image upload ${response.statusCode}");
+              }
+            });
+      });
+
+    
+      
+  }
+
   Future<Null> capture() async {
     if (controller.value.isStarted) {
-      final Directory tempDir = await getTemporaryDirectory();
+      final Directory tempDir = await  getTemporaryDirectory();
       if (!mounted) {
         return;
       }
       final String tempPath = tempDir.path;
       final String path = '$tempPath/picture${pictureCount++}.jpg';
-      print("salvataggio immagine " + path);
+      //print("salvataggio immagine " + path);
       await controller.capture(path);
       if (!mounted) {
         return;
       }
-      setState(
-            () {
+      
+      setState(() {
           imagePath = path;
-        },
-      );
+        });
+
+      File imageFile = new File(path);
+      imageFile.length().then( (dim) => print("$path, dim in bytes = " + dim.toString()));
+      
+
+      await uploadImage(path);
     }
   }
 }

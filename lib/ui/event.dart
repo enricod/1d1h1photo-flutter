@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../model/events.dart';
+import '../model/consts.dart';
+
 import '../pages/event_page.dart';
+
 
 class EventEntryItem extends StatelessWidget {
   final Event entry;
@@ -23,8 +26,14 @@ class EventEntryItem extends StatelessWidget {
       new ListTile(
         title:
             new FlatButton(onPressed: () => gotoToEventPage(context, root),
-                child: new Text(root.name)), //,
-        subtitle: new Text("closed " + root.end),
+                child: new Text(root.name,
+                   style: new TextStyle(
+                      color: Colors.grey[555],
+                      fontSize: Consts.EVENT_CLOSED_TITLE_FONT_SIZE,
+                    ),
+                  )
+              ), //,
+          subtitle: new Text("closed " + root.end),
       ),
       new ImagesRow(entry)
     ]);
@@ -37,25 +46,29 @@ class EventEntryItem extends StatelessWidget {
 }
 
 class ImagesRow extends StatelessWidget {
-  Event event;
+  final Event event;
 
   ImagesRow(this.event);
 
+  String thumbUrl(int index) {
+    if (this.event.submissions != null && this.event.submissions.length > index) {
+      return Consts.API_BASE_URL + '/' + this.event.submissions[index].thumbUrl;
+    }
+    // FIXME
+    return "https://c1.staticflickr.com/9/8028/28941101031_e93b862b44_q.jpg";
+  }
   @override
   Widget build(BuildContext context) {
     return new Row(
       children: <Widget>[
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/9/8028/28941101031_e93b862b44_q.jpg"),
+          child: new Image.network( thumbUrl(0))
         ),
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/3/2665/32060536633_6c743b9f11_q.jpg"),
+          child: new Image.network( thumbUrl(1))
         ),
         new Expanded(
-          child: new Image.network(
-              "https://c1.staticflickr.com/5/4313/36075724132_2d3722d870_q.jpg"),
+          child: new Image.network( thumbUrl(2))
         ),
       ],
     );
@@ -63,19 +76,32 @@ class ImagesRow extends StatelessWidget {
 }
 
 class NextEvent extends StatefulWidget {
-  Event event;
+  
+  final Event event;
 
   NextEvent(this.event);
 
   @override
-  State createState() => new NextEventState();
+  State createState() => new NextEventState(this.event);
 }
 
+/// mostra widget con informazioni su prossimo evento
 class NextEventState extends State<NextEvent> {
+
+  String startingIn = '';
+
+  Event event;
+
+  NextEventState(this.event);
+
   @override
   void initState() {
     super.initState();
+
   }
+
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -87,14 +113,20 @@ class NextEventState extends State<NextEvent> {
               children: <Widget>[
                 new Center(
                     child: new Text(
-                  widget.event.name,
-                  style: new TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
-                )),
-                new Text("inizia  tra ..."),
-                widget.event.futuro
-                    ? new Text("")
-                    : new ImagesRow(widget.event),
+                      widget.event.name,
+                      style: new TextStyle(
+                          color: Colors.grey[555],
+                          fontSize: 24.0
+                        ))),
+                new Row(children: <Widget>
+                    [ 
+                      
+                      new Text( widget.event.counter() ),
+                    ]
+                ),
+                widget.event.isFuture()
+                    ? new Text('')
+                    : new ImagesRow(event),
               ],
             )));
   }

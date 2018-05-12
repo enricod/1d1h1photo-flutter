@@ -30,11 +30,10 @@ class AppTokenStorage {
     }
   }
 
-  Future<File> writeConfs(AppConfs counter) async {
+  Future<File> writeConfs(AppConfs appConfs) async {
     final file = await _localFile;
-
-    print(file.path);
+    // print(file.path);
     // Write the file
-    return file.writeAsString(json.encode(counter));
+    return file.writeAsString(json.encode(appConfs));
   }
 }
