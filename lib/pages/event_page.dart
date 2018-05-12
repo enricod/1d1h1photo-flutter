@@ -12,7 +12,7 @@ class EventPage extends StatelessWidget {
     print("build");
     return  new Scaffold(
         appBar: new AppBar(
-          title: new Text("Event " + event.name),
+          title: new Text( event.name),
         ),
         body: new Center(
             child: new Column(
