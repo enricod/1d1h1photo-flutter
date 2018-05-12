@@ -1,6 +1,7 @@
 # 1 day, 1 hour, 1 photo
 
-A new Flutter project.
+Flutter application for mobile app 1 day, 1 hour, 1 photo
+
 
 ## Getting Started
 
