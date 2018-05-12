@@ -1,4 +1,4 @@
-# one_hour_one_day_photo_flutter
+# 1 day, 1 hour, 1 photo
 
 A new Flutter project.
 
