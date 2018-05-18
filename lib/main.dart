@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
 
   Widget _getStartPage() {
     return appConfs.appToken == '' ?
-      new LoginPage( storage):
-      new MyHomePage(title: Consts.APP_TITLE, appConfs: appConfs, storage: storage);
+      new LoginPage():
+      new MyHomePage(title: Consts.APP_TITLE, appConfs: appConfs);
       //new EventPage(new Event());
   }
 

@@ -1,5 +1,5 @@
-name: one_hour_one_day_photo_flutter
-description: A new Flutter project.
+name: OneDayOneHourOnePhoto
+description: One day, one hour, one photo
 
 dependencies:
   flutter:

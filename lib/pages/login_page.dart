@@ -10,9 +10,7 @@ import '../pages/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   final String title = "Login";
-  final AppTokenStorage storage;
-
-  LoginPage(this.storage);
+  final AppTokenStorage storage = new AppTokenStorage();
 
   @override
   _LoginState createState() => new _LoginState();

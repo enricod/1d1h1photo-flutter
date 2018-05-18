@@ -3,13 +3,12 @@ import '../model/appconfs.dart';
 import '../model/apptoken_storage.dart';
 import '../pages/login_page.dart';
 
-
 /// pagina con dati utente, e possibilità di Logout
 class MySettingsPage extends StatelessWidget{
   final AppConfs appConfs;
   final AppTokenStorage storage;
 
-  MySettingsPage(this.appConfs, this.storage);
+  MySettingsPage(this.appConfs);
   
   void doLogout(BuildContext context) {
     this.appConfs.appToken = '';
@@ -19,7 +18,7 @@ class MySettingsPage extends StatelessWidget{
     
     Navigator.of(context).push(
       new MaterialPageRoute(
-        builder: (context) => new LoginPage( this.storage)
+        builder: (context) => new LoginPage( )
       )
     );
   }

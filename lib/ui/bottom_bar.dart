@@ -9,9 +9,8 @@ class BottomBar extends StatelessWidget {
 
   final AppConfs appConfs;
 
-  final AppTokenStorage storage;
 
-  BottomBar(this.appConfs, this.storage);
+  BottomBar(this.appConfs);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class BottomBar extends StatelessWidget {
               // MySettings page
               Navigator.of(context).push(
                 new MaterialPageRoute(
-                  builder: (context) => new MySettingsPage(this.appConfs, this.storage)
+                  builder: (context) => new MySettingsPage(this.appConfs)
                 )
               );
             }

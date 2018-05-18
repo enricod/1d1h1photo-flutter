@@ -14,9 +14,8 @@ import '../model/events.dart';
 class MyHomePage extends StatefulWidget {
   final String title;
   final AppConfs appConfs;
-  final AppTokenStorage storage;
 
-  MyHomePage({Key key, this.title, this.appConfs, this.storage}) : super(key: key);
+  MyHomePage({Key key, this.title, this.appConfs}) : super(key: key);
 
   @override
   _MyHomePageState createState() => new _MyHomePageState();
@@ -89,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
           ]),
       ),
-      bottomNavigationBar: new BottomBar( widget.appConfs, widget.storage),
+      bottomNavigationBar: new BottomBar( widget.appConfs),
     );
   }
 }
