@@ -1,3 +1,4 @@
+import 'package:OneDayOneHourOnePhoto/model/appconfs.dart';
 // This is a basic Flutter widget test.
 // To perform an interaction with a widget in your test, use the WidgetTester utility that Flutter
 // provides. For example, you can send tap and scroll gestures. You can also use WidgetTester to
@@ -6,10 +7,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:one_hour_one_day_photo_flutter/model/appconfs.dart';
-import 'package:one_hour_one_day_photo_flutter/model/apptoken_storage.dart';
 
-import 'package:one_hour_one_day_photo_flutter/main.dart';
+import 'package:OneDayOneHourOnePhoto/model/apptoken_storage.dart';
+import 'package:OneDayOneHourOnePhoto/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {

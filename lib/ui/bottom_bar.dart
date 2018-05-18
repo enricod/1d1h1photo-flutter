@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../model/appconfs.dart';
-import '../model/apptoken_storage.dart';
 import '../pages/mysettings_page.dart';
 import '../pages/camera_page.dart';
 import '../pages/myphotos_page.dart';
@@ -8,7 +7,6 @@ import '../pages/myphotos_page.dart';
 class BottomBar extends StatelessWidget {
 
   final AppConfs appConfs;
-
 
   BottomBar(this.appConfs);
 
@@ -30,7 +28,6 @@ class BottomBar extends StatelessWidget {
                   builder: (context) => new MyPhotosPage(this.appConfs)
                 )
               );
-            
             } else if (index == 3) {
               // MySettings page
               Navigator.of(context).push(

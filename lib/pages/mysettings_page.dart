@@ -6,7 +6,6 @@ import '../pages/login_page.dart';
 /// pagina con dati utente, e possibilità di Logout
 class MySettingsPage extends StatelessWidget{
   final AppConfs appConfs;
-  final AppTokenStorage storage;
 
   MySettingsPage(this.appConfs);
   
@@ -14,6 +13,8 @@ class MySettingsPage extends StatelessWidget{
     this.appConfs.appToken = '';
     this.appConfs.username = '';
     this.appConfs.email = '';
+
+    AppTokenStorage storage = new AppTokenStorage();
     storage.writeConfs(this.appConfs);
     
     Navigator.of(context).push(
@@ -22,6 +23,7 @@ class MySettingsPage extends StatelessWidget{
       )
     );
   }
+
   
   @override
   Widget build(BuildContext context) {
