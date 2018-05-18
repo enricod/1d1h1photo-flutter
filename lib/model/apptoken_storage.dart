@@ -5,7 +5,16 @@ import 'dart:convert';
 
 import 'package:path_provider/path_provider.dart';
 
+/// singleton implementation
 class AppTokenStorage {
+  static final AppTokenStorage _singleton = new AppTokenStorage._internal();
+
+  factory AppTokenStorage() {
+    return _singleton;
+  }
+
+  AppTokenStorage._internal();
+
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
@@ -23,7 +32,6 @@ class AppTokenStorage {
       // Read the file
       String contents = await file.readAsString();
       Map userMap = json.decode(contents);
-
       return new AppConfs.fromJson(userMap);
     } catch (e) {
       return new AppConfs();
